@@ -1,0 +1,17 @@
+from sqlalchemy import String,Integer,DateTime
+from sqlalchemy.orm import Mapped,mapped_column
+from datetime import datetime
+from app.db.base import Base
+
+class Skill(Base):
+    __tablename__ = "skills"
+
+    id:Mapped[int] = mapped_column(primary_key=True)
+    name:Mapped[str] = mapped_column(String,nullable=False)
+    category:Mapped[str] = mapped_column(String,nullable=False)
+    display_order:Mapped[int] = mapped_column(Integer,nullable=False)
+    created_at:Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda:datetime.now(timezone.utc),
+        nullable=False
+        )
