@@ -8,8 +8,4 @@ router = APIRouter(prefix="/works",tags=["works"])
 
 @router.get("",response_model=list[WorkRead])
 def get_works(db:Session=Depends(get_db)):
-    return(
-        db.query(Work)
-        .order_by(Work.display_order)
-        .all()
-    )
+    return db.query(Work).all()
