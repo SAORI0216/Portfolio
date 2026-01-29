@@ -9,7 +9,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body className="bg-[#f4e7d7] text-[#1c1c1a] font-kiwi">
+      <body className="text-[#1c1c1a] font-kiwi">
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
