@@ -1,3 +1,9 @@
-export default function Page() {
-  return <div className="p-8">Coming Soon</div>;
+export default function DashbordPage() {
+    return (
+    <div className="p-8">
+      <h1 className="text-2xl font-bold">
+        Admin Dashboard
+      </h1>
+    </div>
+  );
 }

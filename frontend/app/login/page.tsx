@@ -1,6 +1,19 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+import React from "react";
 
 export default function AdminLoginPage() {
+  const router = useRouter();
+
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    //⭐後ほど認証処理を追加
+    router.push("/admin/dashboard");
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 flex items-center justify-center">
       <div className="w-full max-w-sm overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
@@ -20,10 +33,10 @@ export default function AdminLoginPage() {
           </h3>
 
           <p className="mt-1 text-center text-sm text-gray-500 dark:text-gray-400">
-            Administrator sign in
+            For Administrator
           </p>
 
-          <form className="mt-4">
+          <form onSubmit={handleSubmit}className="mt-4">
             <div className="w-full">
               <input
                 type="email"
@@ -49,7 +62,7 @@ export default function AdminLoginPage() {
                 type="submit"
                 className="w-full px-6 py-3 mt-6 text-white bg-[#cb8967] rounded-md hover:bg-[#f4e7d7]"
               >
-                Sign In
+                Login
               </button>
             </div>
           </form>
