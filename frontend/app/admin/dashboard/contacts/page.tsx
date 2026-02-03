@@ -1,3 +1,3 @@
-export default function Page() {
-  return <div className="p-8">Coming Soon</div>;
+export default function ContactsPage() {
+  return <div className="p-8">Contacts Management</div>;
 }
