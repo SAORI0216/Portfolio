@@ -7,7 +7,7 @@ from app.schemas.profiles import ProfilesRead
 router = APIRouter(prefix="/profile",tags=["profile"])
 
 @router.get("",response_model=ProfilesRead)
-def get_profole(db:Session = Depends(get_db)):
+def get_profile(db:Session = Depends(get_db)):
     profile = db.query(Profile).first()
 
     return {
