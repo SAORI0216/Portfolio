@@ -110,7 +110,7 @@ export default async function SkillSection(){
     }
     return(
         <section>
-            <h2 className="mb-6 text-2xl font-bold border-b border-[#cb8967] pb-2">
+            <h2 className="mb-6 text-2xl font-bold border-b border-dashed border-[#cb8967]  pb-2">
                 Skills
             </h2>
             <div className="grid gap-6 md:grid-cols-3">
