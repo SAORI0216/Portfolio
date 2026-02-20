@@ -131,7 +131,7 @@ export default async function SkillSection(){
                             bg-[#f4e7d7]
                             px-4 py-2
                             text-sm
-                            shadow-sm
+                            shadow-none
                             transition
                             hover:scale-105
                             "
