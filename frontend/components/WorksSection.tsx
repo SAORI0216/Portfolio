@@ -38,7 +38,7 @@ export default async function WorksSection(){
                                         <img
                                           src={work.image_url}
                                           alt={work.title}
-                                          className="w-8 h-8 rounded-full object-cover"
+                                          className="w-10 h-10 rounded-full object-cover border border-[#e8dccf]"
                                         />
                                     )}
                                     {work.title}
