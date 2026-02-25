@@ -1,21 +1,7 @@
+"use client";
 import Link from "next/link";
+import { useEffect,useState } from "react";
 
-const contacts = [
-  {
-    id:1,
-    name:"田中太郎",
-    email:"tanaka@mail.com",
-    status:"unhandled",
-    createdAt:"2026/1/20",
-  },
-  {
-    id:2,
-    name:"山田花子",
-    email:"hanako@mail.com",
-    status:"done",
-    createdAt:"2026/1/18",
-  },
-];
 const statusLabel = {
   unhandled:"未対応",
   handling:"対応中",
@@ -26,8 +12,24 @@ const statusColor = {
   handling:"bg-yellow-500 text-yellow-700",
   done:"bg-green-500 text-green-700",
 }
+type Contact = {
+  id:number;
+  name:string;
+  email:string;
+  message:string;
+  status:string;
+  admin_memo:string | null;
+  created_at:string;
+};
 
 export default function ContactsPage() {
+  const[contacts,setContacts] = useState<Contact[]>([]);
+
+  useEffect(() =>{
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts`)
+      .then(res=>res.json())
+      .then(data=>setContacts(data));
+  },[]);
   return(
     <div>
       <h1 className="text-2xl font-semibold mb-6">Contacts</h1>
@@ -54,7 +56,7 @@ export default function ContactsPage() {
                    {statusLabel[contact.status as keyof typeof statusLabel]}
                   </span>
                 </td>
-                <td className="px-4 py-3">{contact.createdAt}</td>
+                <td className="px-4 py-3">{contact.created_at}</td>
                 <td className="px-4 py-3"><Link href={`/admin/dashboard/contacts/${contact.id}`}className="text-[#cb8967] hover:underLine">詳細</Link></td>
               </tr>
             ))}

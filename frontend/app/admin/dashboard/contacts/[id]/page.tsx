@@ -1,41 +1,61 @@
 "use client";
 
 import { useParams,useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
-const dummyContact = {
-  id: 1,
-  name: "田中 太郎",
-  email: "tanaka@example.com",
-  message:
-    "ポートフォリオ制作について相談したいです。お時間をいただけますでしょうか。",
-  status: "unhandled",
-  memo: "",
-  createdAt: "2026/01/20 14:30",
-};
 const statusOptions = [
   { value: "unhandled", label: "未対応" },
   { value: "handling", label: "対応中" },
   { value: "done", label: "対応済" },
 ];
+type Contact = {
+  id:number;
+  name:string;
+  email:string;
+  message:string;
+  status:string;
+  admin_memo:string | null;
+  created_at:string;
+};
 
 export default function ContactDetailPage(){
     const router = useRouter();
     const params = useParams();
-    const [status,setStatus] = useState(dummyContact.status);
-    const [memo,setMemo] = useState(dummyContact.memo);
+    const[contact,setContact] = useState<Contact | null>(null);
+    const[status,setStatus] = useState("");
+    const[memo,setMemo] = useState("");
+    const handleSave = async() =>{
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts/${params.id}`,
+            {
+                method:"PATCH",
+                headers:{
+                    "Content-Type":"application/json",
+                },
+                body:JSON.stringify({
+                    status:status,
+                    admin_memo:memo,
+                }),
+            }
+        );
 
-    const handleSave = () =>{
-        //⭐あとでＡＰＩに差し替え
-        console.log({
-            id:params.id,
-            status,
-            memo,
-        });
-
-        alert("保存しました（ダミー）");
+        alert("保存完了！");
     };
+  useEffect(() =>{
+    if(!params.id) return;
+        
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts/${params.id}`)
+      .then(res=>res.json())
+      .then(data=>{
+        setContact(data);
+        setStatus(data.status);
+        setMemo(data.admin_memo ?? "");
+    });
+  },[params.id]);
+    if(!contact){
+        return <div className="p-10">読み込み中...</div>;
+    }
     return(
+    
         <div className="max-w-3xl">
         {/* 一覧へ戻る */}
         <button onClick={() => router.push("/admin/dashboard/contacts")} className="mb-6 text-sm text-gray-500 hover:underline">
@@ -48,22 +68,22 @@ export default function ContactDetailPage(){
             <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                     <p className="text-[#cb8967]">名前：</p>
-                    <p className="text-[#1c1c1a]">{dummyContact.name}</p>
+                    <p className="text-[#1c1c1a]">{contact?.name}</p>
                 </div>
                 <div>
                     <p className="text-[#cb8967]">メールアドレス：</p>
-                    <p className="text-[#1c1c1a]">{dummyContact.email}</p>
+                    <p className="text-[#1c1c1a]">{contact?.email}</p>
                 </div>
                 <div>
                     <p className="text-[#cb8967]">受信日時：</p>
-                    <p className="text-[#1c1c1a]">{dummyContact.createdAt}</p>
+                    <p className="text-[#1c1c1a]">{contact?.created_at}</p>
                 </div>
             </div>
         </div>
         {/* 本文 */}
         <div className="rounded-xl border bg-white p-6 mb-6">
             <p className="text-sm text-[#cb8967] mb-2">お問い合わせ内容</p>
-            <p className="whitespace-pre-wrap">{dummyContact.message}</p>
+            <p className="whitespace-pre-wrap">{contact?.message}</p>
         </div>
         {/* ステータス */}
         <div className="rounded-xl border bg-white p-6 mb-6">
