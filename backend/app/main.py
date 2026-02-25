@@ -4,7 +4,7 @@ from sqlalchemy import text
 from app.db.session import engine
 from app.db.base import Base
 import app.models
-from app.routers import skills,works,profiles
+from app.routers import skills,works,profiles,contact
 
 app = FastAPI()
 
@@ -28,3 +28,4 @@ def startup_db_check():
 app.include_router(skills.router)
 app.include_router(works.router)
 app.include_router(profiles.router)
+app.include_router(contact.router)
