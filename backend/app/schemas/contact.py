@@ -15,5 +15,9 @@ class ContactResponse(BaseModel):
     admin_memo:str | None
     created_at:datetime
 
+class ContactUpdate(BaseModel):
+    status:str
+    admin_memo:str | None = None
+
     class Config:
         from_attributes = True

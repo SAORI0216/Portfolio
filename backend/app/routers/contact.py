@@ -2,7 +2,7 @@ from fastapi import APIRouter,Depends
 from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.contact import Contact
-from app.schemas.contact import ContactCreate,ContactResponse
+from app.schemas.contact import ContactCreate,ContactResponse,ContactUpdate
 from typing import List
 
 router = APIRouter(prefix="/contacts",tags=["contacts"])
@@ -27,4 +27,16 @@ def get_contacts(db:Session=Depends(get_db)):
 @router.get("/{contact_id}",response_model=ContactResponse)
 def get_contact(contact_id:int,db:Session=Depends(get_db)):
     return db.query(Contact).filter(Contact.id == contact_id).first()
+
+@router.patch("/{contact_id}",response_model=ContactResponse)
+def update_contact(contact_id:int,update:ContactUpdate,db:Session=Depends(get_db)):
+    contact = db.query(Contact).filter(Contact.id == contact_id).first()
+    if not contact:
+        return None
+    contact.status = update.status
+    contact.admin_memo = update.admin_memo
+
+    db.commit()
+    db.refresh(contact)
     
+    return contact
