@@ -10,7 +10,7 @@ class Contact(Base):
     name:Mapped[str] = mapped_column(String,nullable=False)
     email:Mapped[str] = mapped_column(String,nullable=False)
     message:Mapped[str] = mapped_column(Text,nullable=False)
-    status:Mapped[str] = mapped_column(String, default="new")
+    status:Mapped[str] = mapped_column(String, default="unhandled",server_default="unhandled")
     admin_memo:Mapped[str] = mapped_column(Text,nullable=True)
     created_at:Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
