@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
+import LogoutButton from "@/components/LogoutButton"
+
 
 export default function DashboardLayout({
   children,
@@ -47,12 +49,7 @@ export default function DashboardLayout({
           >
            Contacts
           </Link>
-          <Link
-            href="/"
-            className="rounded px-3 py-2 hover:bg-[#cb8967]"
-          >
-           Logout
-          </Link>
+          <LogoutButton />
         </nav>
        </aside>
        {/* メインコンテンツ */}
