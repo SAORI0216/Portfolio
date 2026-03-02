@@ -7,5 +7,10 @@ class ProfilesRead(BaseModel):
     profile_image_url:str | None
     zenn_url:str | None
 
+class ProfileUpdate(BaseModel):
+    name:str
+    bio:str
+    profile_image_url:str | None
+
     class Config:
         from_attributes = True

@@ -30,6 +30,12 @@ export default function DashboardLayout({
            Profile
           </Link>
           <Link
+            href="/admin/dashboard/skills"
+            className="rounded px-3 py-2 hover:bg-[#cb8967]"
+          >
+           Skills
+          </Link>
+          <Link
             href="/admin/dashboard/works"
             className="rounded px-3 py-2 hover:bg-[#cb8967]"
           >
@@ -40,12 +46,6 @@ export default function DashboardLayout({
             className="rounded px-3 py-2 hover:bg-[#cb8967]"
           >
            Contacts
-          </Link>
-          <Link
-            href="/admin/dashboard/settings"
-            className="rounded px-3 py-2 hover:bg-[#cb8967]"
-          >
-           Settings
           </Link>
           <Link
             href="/"

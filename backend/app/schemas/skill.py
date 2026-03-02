@@ -7,5 +7,15 @@ class SkillRead(BaseModel):
     category:SkillCategory
     display_order:int
 
+class SkillCreate(BaseModel):
+    name:str
+    category:SkillCategory
+    display_order:int
+
+class SkillUpdate(BaseModel):
+    name:str
+    category:SkillCategory
+    display_order:int
+
     class Config:
         from_attributes = True

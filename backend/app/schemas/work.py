@@ -8,5 +8,19 @@ class WorkRead(BaseModel):
     github_url:str | None = None
     image_url:str | None = None
 
+class WorkCreate(BaseModel):
+    title:str
+    description:str | None = None
+    tech_stack:str | None = None
+    github_url:str | None = None
+    image_url:str | None = None
+
+class WorkUpdate(BaseModel):
+    title:str
+    description:str | None = None
+    tech_stack:str | None = None
+    github_url:str | None = None
+    image_url:str | None = None
+
     class Config:
         from_attributes = True
