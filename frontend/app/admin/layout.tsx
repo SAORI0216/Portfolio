@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import Link from "next/link";
 import LogoutButton from "@/components/LogoutButton"
+import AuthGuard from "@/components/AuthGuard";
 
 
 export default function DashboardLayout({
@@ -9,6 +10,7 @@ export default function DashboardLayout({
   children: ReactNode;
 }) {
   return (
+    <AuthGuard>
     <div className="flex min-h-screen bg-white p-6 gap-6">
        {/* サイドバー */}
        <aside className="w-[220px] h-[60vh] bg-[#f4e7d7] text-gray-800 rounded-2xl p-4 flex flex-col">
@@ -57,5 +59,6 @@ export default function DashboardLayout({
         {children}
        </main>
     </div>
+    </AuthGuard>
   );
 }
