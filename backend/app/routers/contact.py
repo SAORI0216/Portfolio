@@ -4,6 +4,7 @@ from app.db.session import get_db
 from app.models.contact import Contact
 from app.schemas.contact import ContactCreate,ContactResponse,ContactUpdate
 from typing import List
+from app.core.auth import verify_token
 
 router = APIRouter(prefix="/contacts",tags=["contacts"])
 
@@ -21,15 +22,15 @@ def create_contact(contact:ContactCreate,db:Session=Depends(get_db)):
     return new_contact
 
 @router.get("/",response_model=List[ContactResponse])
-def get_contacts(db:Session=Depends(get_db)):
+def get_contacts(db:Session=Depends(get_db),user=Depends(verify_token)):
     return db.query(Contact).order_by(Contact.created_at.desc()).all()
 
 @router.get("/{contact_id}",response_model=ContactResponse)
-def get_contact(contact_id:int,db:Session=Depends(get_db)):
+def get_contact(contact_id:int,db:Session=Depends(get_db),user=Depends(verify_token)):
     return db.query(Contact).filter(Contact.id == contact_id).first()
 
 @router.patch("/{contact_id}",response_model=ContactResponse)
-def update_contact(contact_id:int,update:ContactUpdate,db:Session=Depends(get_db)):
+def update_contact(contact_id:int,update:ContactUpdate,db:Session=Depends(get_db),user=Depends(verify_token)):
     contact = db.query(Contact).filter(Contact.id == contact_id).first()
     if not contact:
         return None

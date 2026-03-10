@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.profile import Profile
 from app.schemas.profiles import ProfilesRead,ProfileUpdate
+from app.core.auth import verify_token
 
 router = APIRouter(prefix="/profile",tags=["profile"])
 
@@ -19,7 +20,7 @@ def get_profile(db:Session = Depends(get_db)):
     }
 
 @router.put("/{profile_id}",response_model=ProfilesRead)
-def update_profile(profile_id:int,data:ProfileUpdate,db:Session=Depends(get_db)):
+def update_profile(profile_id:int,data:ProfileUpdate,db:Session=Depends(get_db),user=Depends(verify_token)):
     profile = db.query(Profile).filter(Profile.id == profile_id).first()
 
     if not profile:
