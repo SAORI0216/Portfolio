@@ -1,17 +1,34 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Image from "next/image";
 import React from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
 
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async(e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    //⭐後ほど認証処理を追加
-    router.push("/admin/dashboard");
+    try{
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const token = await userCredential.user.getIdToken();
+      //⭐あとでAPIに送る
+      console.log("token:",token);
+      router.push("/admin/dashboard");
+
+    } catch(error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -40,7 +57,9 @@ export default function AdminLoginPage() {
             <div className="w-full">
               <input
                 type="email"
+                value={email}
                 placeholder="Email Address"
+                onChange={(e) => setEmail(e.target.value)}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border rounded-lg
                   dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200
                   focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none"
@@ -50,7 +69,9 @@ export default function AdminLoginPage() {
             <div className="w-full mt-4">
               <input
                 type="password"
+                value={password}
                 placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
                 className="block w-full px-4 py-2 mt-2 text-gray-700 placeholder-gray-400 bg-white border rounded-lg
                   dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200
                   focus:border-blue-400 focus:ring focus:ring-blue-300 focus:ring-opacity-40 focus:outline-none"

@@ -5,6 +5,7 @@ from app.db.session import engine
 from app.db.base import Base
 import app.models
 from app.routers import skills,works,profiles,contact
+from app.core import firebase
 
 app = FastAPI()
 

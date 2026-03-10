@@ -1,20 +1,39 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect,useState } from "react";
+import { auth } from "@/lib/firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
-async function getDashboardData() {
-  const [contactsRes,worksRes] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts`,{cache:"no-store"}),
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/works`,{cache:"no-store"}),
-  ]);
-  const contacts = await contactsRes.json();
-  const works = await worksRes.json();
-
-  return {contacts,works};
-};
-
-export default async function AdminDashbordPage() {
-  const {contacts,works} = await getDashboardData();
+export default function AdminDashbordPage() {
+  const [contacts,setContacts] = useState([]);
+  const [works,setWorks] = useState([]);
   const totalContacts = contacts.length;
   const totalWorks = works.length;
+
+  useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth,async(user) =>{
+        if(!user) return;
+
+        const token = await user.getIdToken();
+
+        const [contactsRes,workRes] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/contacts`,{
+            headers:{
+              Authorization:`Bearer ${token}`,
+            },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/works`,{
+            headers:{
+              Authorization:`Bearer ${token}`,
+            },
+          }),
+        ]);
+        setContacts(await contactsRes.json());
+        setWorks(await workRes.json());
+      });
+      return() => unsubscribe();
+  },[]);
 
   return (
     <div className="space-y-8">

@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.db.session import get_db
 from app.models.skill import Skill
 from app.schemas.skill import SkillRead,SkillCreate,SkillUpdate
+from app.core.auth import verify_token
 
 router = APIRouter(prefix="/skills", tags=["skills"])
 
@@ -15,7 +16,7 @@ def get_skills(db:Session = Depends(get_db)):
     )
 
 @router.post("",response_model=SkillRead)
-def create_skill(data:SkillCreate,db:Session=Depends(get_db)):
+def create_skill(data:SkillCreate,db:Session=Depends(get_db),user=Depends(verify_token)):
     skill = Skill(**data.dict())
     db.add(skill)
     db.commit()
@@ -23,7 +24,7 @@ def create_skill(data:SkillCreate,db:Session=Depends(get_db)):
     return skill
 
 @router.put("/{skill_id}",response_model=SkillRead)
-def update_skill(skill_id:int,data:SkillUpdate,db:Session=Depends(get_db)):
+def update_skill(skill_id:int,data:SkillUpdate,db:Session=Depends(get_db),user=Depends(verify_token)):
     skill = db.query(Skill).filter(Skill.id == skill_id).first()
     if not skill:
         raise HTTPException(status_code=404)
@@ -37,7 +38,7 @@ def update_skill(skill_id:int,data:SkillUpdate,db:Session=Depends(get_db)):
     return skill
 
 @router.delete("/{skill_id}")
-def delete_skill(skill_id:int,db:Session=Depends(get_db)):
+def delete_skill(skill_id:int,db:Session=Depends(get_db),user=Depends(verify_token)):
     skill = db.query(Skill).filter(Skill.id == skill_id).first()
     if not skill:
         raise HTTPException(status_code=404)
